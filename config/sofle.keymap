@@ -107,16 +107,16 @@
         media_layer {
 // ----------------------------------------------------------------------------------------------------------------------------
 // |        |                  |         |         |         |         |                     |         |         |          |         |         |          |
-// |        | C_PLAY_PAUSE     |  C_STOP |         |         |         |                     |         |         |          |         |         |          |
-// |        | C_PREV           |  C_NEXT |         |         |         |                     |         |         |          |         |         |          |
+// |        | C_PLAY_PAUSE     |  C_STOP |         |         |         |                     |  PGUP   |         |   ^      |         |         |          |
+// |        | C_PREV           |  C_NEXT |         |         |         |                     |  PGDN   |   <-    |   v      |  ->     |  DEL    |   BKSPC  |
 // |        | C_RW             |  C_FF   |         |         |         |         | |         |         |         |          |         |         |          |
 //                             |         |         |         |         |         | |         |         |         |          |         |
               display-name = "media";
             bindings = <
 &none        &none               &none      &none     &none     &none                          &none      &none     &none      &none     &none     &none
-&none        &kp C_PLAY_PAUSE    &kp C_STOP &none     &none     &none                          &none      &none     &none      &none     &none     &none
-&none        &kp C_PREV          &kp C_NEXT &none     &none     &none                          &none      &none     &none      &none     &none     &none
-&none        &kp C_RW            &kp C_FF   &none     &none     &none     &none      &none     &none      &none     &none      &none     &none     &none
+&none        &kp C_PLAY_PAUSE    &kp C_STOP &none     &none     &none                          &kp PG_UP  &trans    &kp UP     &trans    &kp N0    &trans
+&none        &kp C_PREV          &kp C_NEXT &none     &none     &none                          &kp PG_DN  &kp LEFT  &kp DOWN   &kp RIGHT &kp DEL   &kp BSPC
+&none        &kp C_RW            &kp C_FF   &none     &none     &none     &none      &none     &to BASE   &none     &none      &none     &none     &none
                                  &none      &none     &none     &none     &none      &none     &none      &none     &none      &none
             >;
         };
