@@ -16,6 +16,9 @@
 #define ADJUST 3
 #define MEDIA 4
 
+    &led_strip {
+        chain-length = <30>;
+    }
 / {
 
    // Activate ADJUST layer by pressing raise and lower
@@ -26,10 +29,6 @@
             then-layer = <ADJUST>;
         };
     };
-
-    &led_strip {
-        chain-length = <30>;
-    }
 
     keymap {
         compatible = "zmk,keymap";
