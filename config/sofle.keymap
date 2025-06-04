@@ -16,6 +16,10 @@
 #define ADJUST 3
 #define MEDIA 4
 
+&led_strip {
+    chain-length = <30>;
+    mosi-pin = <8>;
+};
 
 / {
 
@@ -28,10 +32,7 @@
         };
     };
 
-    &led_strip {
-        chain-length = <30>;
-        mosi-pin = <8>;
-    };
+
 
     keymap {
         compatible = "zmk,keymap";
