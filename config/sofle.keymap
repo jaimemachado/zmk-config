@@ -14,6 +14,7 @@
 #define LOWER 1
 #define RAISE 2
 #define ADJUST 3
+#define MEDIA 4
 
 / {
 
@@ -71,16 +72,16 @@
         raise_layer {
             display-name = "raise";
 // ----------------------------------------------------------------------------------------------------------------
-// | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       | st_unlock |
+// | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |           |
 // |       | INS  | PSCR | GUI   |       |      |                | PGUP |      |   ^   |      |       |           |
 // |       | ALT  | CTRL | SHIFT |       | CAPS |                | PGDN |   <- |   v   |  ->  |  DEL  | BKSPC     |
-// |       | UNDO | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |           |
+// |       | UNDO | CUT  | COPY  | PASTE |      |      |  |      | MEDIA|      |       |      |       |           |
 //                |      |       |       |      |      |  |      |      |      |       |      |
             bindings = <
-&bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans    &trans   &trans    &trans  &studio_unlock
+&bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans    &trans   &trans    &trans  &trans
 &trans     &kp INS      &kp PSCRN    &kp K_CMENU  &trans       &trans                        &kp PG_UP &trans    &kp UP   &trans    &kp N0  &trans
 &trans     &kp LALT     &kp LCTRL    &kp LSHFT    &trans       &kp CLCK                      &kp PG_DN &kp LEFT  &kp DOWN &kp RIGHT &kp DEL &kp BSPC
-&trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &trans        &trans  &trans  &trans    &trans    &trans   &trans    &trans  &trans
+&trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &trans        &trans  &trans  &to MEDIA &trans    &trans   &trans    &trans  &trans
                         &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
             >;
 
@@ -89,22 +90,35 @@
 
         adjust_layer {
 // ----------------------------------------------------------------------------------------------------------------------------
-// | BTCLR  |  BT1    |  BT2    |   BT3   |   BT4   |   BT5   |                  |      |      |       |      |       |       |
-// | EXTPWR | RGB_HUD | RGB_HUI | RGB_SAD | RGB_SAI | RGB_EFF |                  |      |      |       |      |       |       |
-// |        | RGB_BRD | RGB_BRI |         |         |         |                  |      |      |       |      |       |       |
-// |        |         |         |         |         |         | RGB_TOG | |      |      |      |       |      |       |       |
+// | BTCLR  |  BT1    |  BT2    |   BT3   |   BT4   |   BT5   |                  |      |      |       |      |       |  st_unlock |
+// | EXTPWR | RGB_HUD | RGB_HUI | RGB_SAD | RGB_SAI | RGB_EFF |                  |      |      |       |      |       |            |
+// |        | RGB_BRD | RGB_BRI |         |         |         |                  |      |      |       |      |       |            |
+// |        |         |         |         |         |         | RGB_TOG | |      |      |      |       |      |       |            |
 //                    |         |         |         |         |         | |      |      |      |       |      |
             display-name = "adjust";
             bindings = <
-&bt BT_CLR        &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4                            &none &none &none &none &none &none
+&bt BT_CLR        &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4                            &none &none &none &none &none &studio_unlock
 &ext_power EP_TOG &rgb_ug RGB_HUD &rgb_ug RGB_HUI &rgb_ug RGB_SAD &rgb_ug RGB_SAI &rgb_ug RGB_EFF                         &none &none &none &none &none &none
 &none             &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none           &none           &none                                   &none &none &none &none &none &none
 &none             &none           &none           &none           &none           &none            &rgb_ug RGB_TOG &none  &none &none &none &none &none &none
                                   &none           &none           &none           &none            &none           &none  &none &none &none &none
             >;
         };
-        extra_1 {
-            status = "reserved";
+        media_layer {
+// ----------------------------------------------------------------------------------------------------------------------------
+// |        |                  |         |         |         |         |                     |         |         |          |         |         |          |
+// |        | C_PLAY_PAUSE     |  C_STOP |         |         |         |                     |         |         |          |         |         |          |
+// |        | C_PREV           |  C_NEXT |         |         |         |                     |         |         |          |         |         |          |
+// |        | C_RW             |  C_FF   |         |         |         |         | |         |         |         |          |         |         |          |
+//                             |         |         |         |         |         | |         |         |         |          |         |
+              display-name = "media";
+            bindings = <
+&none        &none               &none      &none     &none     &none                          &none      &none     &none      &none     &none     &none
+&none        &kp C_PLAY_PAUSE    &kp C_STOP &none     &none     &none                          &none      &none     &none      &none     &none     &none
+&none        &kp C_PREV          &kp C_NEXT &none     &none     &none                          &none      &none     &none      &none     &none     &none
+&none        &kp C_RW            &kp C_FF   &none     &none     &none     &none      &none     &none      &none     &none      &none     &none     &none
+                                 &none      &none     &none     &none     &none      &none     &none      &none     &none      &none
+            >;
         };
 
         extra_2 {
