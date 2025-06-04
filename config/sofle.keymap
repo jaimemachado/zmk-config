@@ -29,9 +29,8 @@
 
     &led_strip {
         chain-length = <30>;
-        mosi-pin = <8>
+        mosi-pin = <8>;
     }
-
 
     keymap {
         compatible = "zmk,keymap";
