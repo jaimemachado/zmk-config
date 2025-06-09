@@ -1,0 +1,44 @@
+name: Generate ZMK Keymap Unified View
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  zmk-viewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Install zmk-viewer
+        run: go install github.com/mrmarble/zmk-viewer/cmd/zmk-viewer@latest
+
+      - name: Generate keymap images
+        run: |
+          mkdir -p keymap-view
+          ~/go/bin/zmk-viewer generate -f config/sofle.keymap sofle --unified -o keymap-view
+          mv keymap-view/sofle-unified.png keymap-view/sofle-unified.png
+          ~/go/bin/zmk-viewer generate -f config/sofle.keymap sofle --single -o keymap-view
+          mv keymap-view/sofle-single.png keymap-view/sofle-single.png
+
+      - name: Commit and push keymap images
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add keymap-view/sofle-unified.png keymap-view/sofle-single.png
+          git commit -m "chore: update keymap images [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Upload keymap view artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sofle-keymap-views
+          path: keymap-view/
