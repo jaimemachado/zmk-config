@@ -8,11 +8,9 @@ The following images are automatically generated from the keymap using [zmk-view
 
 ### Unified View
 
-![Sofle Unified Keymap](keymap-view/sofle-unified.png)
+![Sofle Unified Keymap](keymap-drawer/sofle.svg)
 
-### Single View
 
-![Sofle Single Keymap](keymap-view/sofle-single.png)
 
 ---
 
