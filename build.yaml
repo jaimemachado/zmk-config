@@ -27,3 +27,5 @@ include:
   - board: nice_nano_v2
     shield: sofle_right
     overlay: nice_nano_v2.overlay
+  - board: nice_nano_v2
+    shield: settings_reset
