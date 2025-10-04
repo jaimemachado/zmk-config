@@ -17,9 +17,6 @@
 #define MEDIA 4
 
 
-&led_strip {
-    chain-length = <30>;
-};
 / {
 
    // Activate ADJUST layer by pressing raise and lower
