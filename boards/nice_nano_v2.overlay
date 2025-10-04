@@ -34,7 +34,7 @@
         /* WS2812 */
         chain-length = <30>; /* arbitrary; change at will */
 
-
+        pins = <8>;
 
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
@@ -45,10 +45,6 @@
             LED_COLOR_ID_BLUE
         >;
 
-    };
-    ws2812_pins: ws2812_pins {
-        /* P0.08 is commonly used for underglow on Nice!Nano v2 */
-        pins = <8>;
     };
 };
 
