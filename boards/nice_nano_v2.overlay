@@ -34,8 +34,6 @@
         /* WS2812 */
         chain-length = <30>; /* arbitrary; change at will */
 
-        pins = <8>;
-
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
 
