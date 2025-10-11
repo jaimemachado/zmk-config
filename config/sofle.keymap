@@ -16,6 +16,16 @@
 #define ADJUST 3
 #define MEDIA 4
 
+/ {
+  macros {
+    compatible = "zmk,macros";
+
+    select_line: select_line {
+      label = "SEL_LINE";
+      bindings = <&kp HOME &macro_press LSHFT &kp END &macro_release LSHFT>;
+    };
+  };
+};
 
 &led_strip {
     chain-length = <30>;
@@ -80,16 +90,16 @@
             display-name = "raise";
 // ----------------------------------------------------------------------------------------------------------------
 // | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |           |
-// |       | INS  | PSCR | GUI   |       |      |                | PGUP |      |   ^   |      |       |           |
+// |       | INS  | PSCR | GUI   |       |      |                | PGUP | selLn|   ^   |      |       |           |
 // |       | ALT  | CTRL | SHIFT |       | CAPS |                | PGDN |   <- |   v   |  ->  |  DEL  | BKSPC     |
-// |       | UNDO | CUT  | COPY  | PASTE |      |      |  |      | MEDIA|      |       |      |       |           |
+// |       | UNDO | CUT  | COPY  | PASTE |      |      |  |      | MEDIA| Home |  End  |      |       |           |
 //                |      |       |       |      |      |  |      |      |      |       |      |
             bindings = <
-&bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans    &trans   &trans    &trans  &trans
-&trans     &kp INS      &kp PSCRN    &kp K_CMENU  &trans       &trans                        &kp PG_UP &trans    &kp UP   &trans    &kp N0  &trans
-&trans     &kp LALT     &kp LCTRL    &kp LSHFT    &trans       &kp CLCK                      &kp PG_DN &kp LEFT  &kp DOWN &kp RIGHT &kp DEL &kp BSPC
-&trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &trans        &trans  &trans  &to MEDIA &trans    &trans   &trans    &trans  &trans
-                        &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
+&bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans       &trans   &trans    &trans  &trans
+&trans     &kp INS      &kp PSCRN    &kp K_CMENU  &trans       &trans                        &kp PG_UP &select_line &kp UP   &trans    &kp N0  &trans
+&trans     &kp LALT     &kp LCTRL    &kp LSHFT    &trans       &kp CLCK                      &kp PG_DN &kp LEFT     &kp DOWN &kp RIGHT &kp DEL &kp BSPC
+&trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &trans        &trans  &trans  &to MEDIA &kp HOME     &kp END   &trans    &trans  &trans
+                        &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans       &trans   &trans
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
