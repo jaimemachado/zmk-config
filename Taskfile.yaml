@@ -1,0 +1,79 @@
+version: "3"
+
+vars:
+  BOARD: nice_nano_v2
+  SHIELD_LEFT: sofle_left
+  SHIELD_RIGHT: sofle_right
+  BUILD_DIR: build
+  STUDIO_CMAKE: -DCONFIG_ZMK_STUDIO=y
+
+silent: false
+
+tasks:
+  install:zmk-viewer:
+    desc: Install zmk-viewer CLI (Go required)
+    cmds:
+      - command -v go >/dev/null || { echo "Go toolchain not found"; exit 1; }
+      - echo "Installing/updating zmk-viewer..."
+      - go install github.com/mrmarble/zmk-viewer/cmd/zmk-viewer@latest
+      - echo "Installed at $(go env GOPATH)/bin/zmk-viewer"
+
+  setup:
+    desc: Initialize west workspace and fetch modules
+    cmds:
+      - test -d .west || west init -l config
+      - west update
+
+  pristine:
+    desc: Remove build directory (pristine build)
+    cmds:
+      - rm -rf {{.BUILD_DIR}}
+
+  build:left:
+    desc: Build left half with Studio enabled
+    deps: [setup]
+    cmds:
+      - west build -b {{.BOARD}} -d {{.BUILD_DIR}}/left -- -DSHIELD={{.SHIELD_LEFT}} {{.STUDIO_CMAKE}}
+
+  build:right:
+    desc: Build right half (no Studio by default)
+    deps: [setup]
+    cmds:
+      - west build -b {{.BOARD}} -d {{.BUILD_DIR}}/right -- -DSHIELD={{.SHIELD_RIGHT}}
+
+  build:all:
+    desc: Build both halves
+    deps: [build:left, build:right]
+
+  flash:left:
+    desc: Flash left half (assumes UF2 capable board mounted at /media/$USER/NICENANO)
+    cmds:
+      - cp {{.BUILD_DIR}}/left/zephyr/zmk.uf2 /media/$USER/NICENANO/
+
+  flash:right:
+    desc: Flash right half
+    cmds:
+      - cp {{.BUILD_DIR}}/right/zephyr/zmk.uf2 /media/$USER/NICENANO/
+
+  keymap:view:
+    desc: Generate keymap unified + single images (requires zmk-viewer in PATH)
+    cmds:
+      - mkdir -p keymap-view
+      - |
+        if ! command -v zmk-viewer >/dev/null; then
+          echo "zmk-viewer not found, installing...";
+          go install github.com/mrmarble/zmk-viewer/cmd/zmk-viewer@latest;
+        fi
+      - ZMKV=$(command -v zmk-viewer || echo "$(go env GOPATH)/bin/zmk-viewer") && echo "Using $ZMKV" && $ZMKV generate -f config/sofle.keymap sofle --unified -o keymap-view
+      - ZMKV=$(command -v zmk-viewer || echo "$(go env GOPATH)/bin/zmk-viewer") && $ZMKV generate -f config/sofle.keymap sofle --single -o keymap-view
+      - ls -1 keymap-view
+
+  clean:
+    desc: Remove build artifacts and keymap images
+    cmds:
+      - rm -rf build keymap-view
+
+  info:
+    desc: Show variable values
+    cmds:
+      - echo BOARD={{.BOARD}} SHIELD_LEFT={{.SHIELD_LEFT}} SHIELD_RIGHT={{.SHIELD_RIGHT}}
