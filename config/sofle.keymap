@@ -19,19 +19,21 @@
 #define MEDIA 4
 
 / {
-  macros {
-    compatible = "zmk,macros";
+    macros {
+        compatible = "zmk,macros";
 
-    select_line: select_line {
-      label = "SEL_LINE";
-      // Use macro_wait_time primitive (10ms) instead of invalid &wait-ms
-      bindings = <&kp HOME &macro_press LSHFT &kp END &macro_release LSHFT>;
+        /* Select whole line: HOME, hold SHIFT, END, release SHIFT */
+        ZMK_MACRO(select_line,
+            wait-ms = <10>; /* small delay before starting */
+            bindings
+                = <&kp HOME>
+                , <&macro_press &kp LSHFT>
+                , <&kp END>
+                , <&macro_release &kp LSHFT>
+                ;
+        )
     };
-  };
 };
-
-
-
 
 &pinctrl {
     spi3_default: spi3_default {
