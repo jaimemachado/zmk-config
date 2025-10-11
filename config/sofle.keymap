@@ -24,7 +24,8 @@
 
     select_line: select_line {
       label = "SEL_LINE";
-      bindings = <&kp HOME &macro_press LSHFT &kp END &macro_release LSHFT>;
+      // Added 10ms delay after HOME for reliability
+      bindings = <&kp HOME &wait-ms 10 &macro_press LSHFT &kp END &macro_release LSHFT>;
     };
   };
 };
