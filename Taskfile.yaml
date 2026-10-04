@@ -1,7 +1,7 @@
 version: "3"
 
 vars:
-  BOARD: nice_nano_v2
+  BOARD: nice_nano//zmk
   SHIELD_LEFT: sofle_left
   SHIELD_RIGHT: sofle_right
   BUILD_DIR: build
